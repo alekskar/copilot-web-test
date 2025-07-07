@@ -2,7 +2,9 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const fs = require('fs');
 
-const DB_PATH = path.join(__dirname, '../../database/tasks.db');
+const DB_PATH = process.env.NODE_ENV === 'test' 
+  ? ':memory:'
+  : path.join(__dirname, '../../database/tasks.db');
 
 // Ensure database directory exists
 const dbDir = path.dirname(DB_PATH);

@@ -92,14 +92,19 @@ async function startServer() {
     await initializeDatabase();
     console.log('Database initialized successfully');
     
-    server.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-      console.log(`Frontend URL: ${process.env.FRONTEND_URL || 'http://localhost:3000'}`);
-      console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
-    });
+    // Only start server if not in test environment
+    if (process.env.NODE_ENV !== 'test') {
+      server.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+        console.log(`Frontend URL: ${process.env.FRONTEND_URL || 'http://localhost:3000'}`);
+        console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+      });
+    }
   } catch (error) {
     console.error('Failed to start server:', error);
-    process.exit(1);
+    if (process.env.NODE_ENV !== 'test') {
+      process.exit(1);
+    }
   }
 }
 
